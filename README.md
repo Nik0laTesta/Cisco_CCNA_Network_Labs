@@ -4,6 +4,8 @@
 
 A series of three progressive network labs covering the full CCNA curriculum. Starting with basic routing and subnetting, adding switching complexity and redundancy, and finally hardening the network with ACLs and security policies. All labs were implemented on real Cisco hardware.
 
+![TinhLab](tinylab.png)
+
 ## Lab Overview
 
 ### Lab 1 — CCNA1: Static Routing & Subnetting
