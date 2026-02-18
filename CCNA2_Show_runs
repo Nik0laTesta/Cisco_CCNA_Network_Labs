@@ -1,0 +1,929 @@
+R1 ShowRun.txt
+
+Rtr1#show run
+Building configuration...
+
+
+Current configuration : 2413 bytes
+!
+! Last configuration change at 12:53:46 UTC Tue Jan 27 2026
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname Rtr1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$mcc4$E5/JqaKO4mHD6Zfp9tf4o/
+!
+no aaa new-model
+!
+no ip domain lookup
+ip domain name xander.abl
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO23280U9A
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username SSHadmin secret 5 $1$Ckpq$DMhA24oJwoMHxZ0mJt2jH.
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ description Link to Rtr2
+ ip address 172.19.14.105 255.255.255.252
+ negotiation auto
+ ipv6 address 2003:0:14:1::1/64
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet0/0/1.10
+ encapsulation dot1Q 10 native
+ ip address 172.19.14.81 255.255.255.240
+ ipv6 address 2003:0:14:10::1/64
+!
+interface GigabitEthernet0/0/1.100
+ encapsulation dot1Q 100
+ ip address 172.19.14.65 255.255.255.240
+ ip helper-address 172.19.14.106
+ ipv6 address 2003:0:14:100::1/64
+!
+interface GigabitEthernet0/0/1.200
+ encapsulation dot1Q 200
+ ip address 172.19.14.1 255.255.255.192
+ ip helper-address 172.19.14.106
+ ipv6 address 2003:0:14:200::1/64
+!
+interface GigabitEthernet0/0/1.500
+ encapsulation dot1Q 500
+ ip address 172.19.14.97 255.255.255.248
+ ip helper-address 172.19.14.106
+ ipv6 address 2003:0:14:500::1/64
+!
+interface Serial0/1/0
+ no ip address
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+ip route 0.0.0.0 0.0.0.0 172.19.14.106
+!
+ip ssh version 2
+!
+ipv6 route ::/0 2003:0:14:1::2
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+wsma agent exec
+!
+wsma agent config
+!
+wsma agent filesys
+!
+wsma agent notify
+!
+!
+end
+
+
+R2 ShowRun.txt
+Rtr2#show run
+Building configuration...
+
+
+Current configuration : 2618 bytes
+!
+! Last configuration change at 07:39:42 UTC Thu Jan 29 2026
+! NVRAM config last updated at 07:40:24 UTC Thu Jan 29 2026
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname Rtr2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$2YdX$27aMCICh8eQF5g1tqQq1b1
+!
+no aaa new-model
+!
+no ip domain lookup
+ip domain name xander.abl
+ip dhcp excluded-address 172.19.14.1 172.19.14.5
+ip dhcp excluded-address 172.19.14.64 172.19.14.68
+ip dhcp excluded-address 172.19.14.80 172.19.14.84
+ip dhcp excluded-address 172.19.14.96 172.19.14.100
+!
+ip dhcp pool VLAN100
+ network 172.19.14.64 255.255.255.240
+ default-router 172.19.14.65
+ dns-server 8.8.8.8 8.8.4.4
+ domain-name xander.abl
+ lease 0 2
+!
+ip dhcp pool VLAN200
+ network 172.19.14.0 255.255.255.192
+ default-router 172.19.14.1
+ dns-server 8.8.8.8 8.8.4.4
+ domain-name xander.abl
+ lease 0 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO234501YS
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username SSHadmin secret 5 $1$LqoA$LKkrhlD8aruydK2ijNoJp/
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ description Link to Rtr1
+ ip address 172.19.14.106 255.255.255.252
+ negotiation auto
+ ipv6 address 2003:0:14:1::2/64
+!
+interface GigabitEthernet0/0/1
+ description Link to VDAB Backbone
+ ip address dhcp
+ negotiation auto
+!
+interface Serial0/1/0
+ no ip address
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ negotiation auto
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip http client source-interface GigabitEthernet0/0/1
+ip route 172.19.14.0 255.255.255.192 172.19.14.105
+ip route 172.19.14.64 255.255.255.240 172.19.14.105
+ip route 172.19.14.80 255.255.255.240 172.19.14.105
+ip route 172.19.14.96 255.255.255.248 172.19.14.105
+!
+ip ssh version 2
+!
+ipv6 route 2003:0:14::/48 2003:0:14:1::1
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+ntp server pool.ntp.org
+ntp server 34.208.249.133
+wsma agent exec
+!
+wsma agent config
+!
+wsma agent filesys
+!
+wsma agent notify
+!
+!
+end
+
+
+SW1 ShowRun.txt
+SW1#show run
+Building configuration...
+
+Current configuration : 5829 bytes
+!
+! Last configuration change at 20:36:11 UTC Tue Mar 2 1993
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$ulHc$WPMrk5OTG62lG.RLLqo2P/
+!
+username SSHadmin secret 5 $1$S23O$Fdqh.x5EeHVzCi8HKRJFK.
+no aaa new-model
+system mtu routing 1500
+!
+!
+!
+!
+!
+!
+!
+ip dhcp snooping vlan 100,200
+no ip dhcp snooping information option
+ip dhcp snooping
+no ip domain-lookup
+ip domain-name xander.abl
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 100,500 priority 24576
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ ip dhcp snooping trust
+!
+interface FastEthernet0/1
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/2
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/3
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/4
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/5
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/6
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/7
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/8
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/9
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/10
+ switchport access vlan 100
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 901b.0e06.117e
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/11
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/12
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/13
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/14
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/15
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/16
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/17
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/18
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/19
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/20
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/21
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/22
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/23
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/24
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/1
+ switchport trunk native vlan 10
+ switchport mode trunk
+ switchport nonegotiate
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+!
+interface Vlan500
+ ip address 172.19.14.98 255.255.255.248
+!
+ip http server
+ip http secure-server
+!
+no vstack
+!
+line con 0
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+end
+
+
+SW2 ShowRun.txt
+SW2#show run
+Building configuration...
+
+Current configuration : 5810 bytes
+!
+! Last configuration change at 20:35:21 UTC Tue Mar 2 1993
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$48jd$YzA7935.LxAFtsu6wa.nm/
+!
+username SSHadmin secret 5 $1$JymF$C.wpvDZiGnm3eO2PBNviX1
+no aaa new-model
+system mtu routing 1500
+!
+!
+!
+!
+!
+!
+!
+ip dhcp snooping vlan 100,200
+no ip dhcp snooping information option
+ip dhcp snooping
+no ip domain-lookup
+ip domain-name xander.abl
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,200 priority 24576
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ ip dhcp snooping trust
+!
+interface FastEthernet0/1
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/2
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/3
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/4
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/5
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/6
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/7
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/8
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/9
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/10
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/11
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/12
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/13
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/14
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/15
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/16
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/17
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/18
+ switchport access vlan 200
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky b827.ebb4.f88c
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/19
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/20
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security
+ shutdown
+ ip dhcp snooping limit rate 5
+!
+interface FastEthernet0/21
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/22
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/23
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface FastEthernet0/24
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 10,100,200,500
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+ ip dhcp snooping limit rate 5
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+!
+interface Vlan500
+ ip address 172.19.14.99 255.255.255.248
+!
+ip http server
+ip http secure-server
+!
+no vstack
+!
+line con 0
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+end
